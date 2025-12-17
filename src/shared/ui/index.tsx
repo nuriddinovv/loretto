@@ -1,2 +1,2 @@
-export { default as Button } from './button';
-export { default as SafeArea } from './safeArea';
+export { Button } from './button';
+export { SafeArea } from './safeArea';

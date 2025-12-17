@@ -9,11 +9,7 @@ type Props = {
   style?: any;
 };
 
-export default function SafeArea({
-  children,
-  edges = DEFAULT_EDGES,
-  style,
-}: Props) {
+export function SafeArea({ children, edges = DEFAULT_EDGES, style }: Props) {
   return (
     <SafeAreaView style={[{ flex: 1 }, style]} edges={edges}>
       {children}

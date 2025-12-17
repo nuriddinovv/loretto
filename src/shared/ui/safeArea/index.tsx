@@ -1,1 +1,1 @@
-export { default } from './SafeArea';
+export { SafeArea } from './SafeArea';

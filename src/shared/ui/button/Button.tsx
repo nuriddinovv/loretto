@@ -15,7 +15,7 @@ type ButtonProps = {
   onPress: () => void;
 };
 
-export default function Button({
+export function Button({
   title,
   loading,
   isDisabled,

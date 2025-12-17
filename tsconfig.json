@@ -11,7 +11,7 @@
     "**/*.ts",
     "**/*.tsx",
     "src/shared/theme/index.tsx",
-    "src/features/auth/login/ui/index.tsx"
+    "src/features/auth/ui/index.tsx"
   ],
   "exclude": ["**/node_modules", "**/Pods"]
 }

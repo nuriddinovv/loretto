@@ -1,4 +1,4 @@
-import { setAuthHeaders } from '@/shared/api';
+import { setAuthHeaders } from '@/shared';
 import React, { createContext, useContext, useMemo, useState } from 'react';
 
 export type Permissions = {

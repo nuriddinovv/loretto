@@ -11,9 +11,7 @@ export function useLoginMutation() {
     mutationFn: (payload: LoginPayload) => loginApi(payload),
     onSuccess: res => {
       if (res.status !== 'success') return;
-
       const d = res.data;
-
       setAuthFromLogin({
         userCode: d.userCode,
         isSuperUser: d.isSuperUser,
@@ -33,7 +31,8 @@ export function useLoginMutation() {
     onError: err => {
       Toast.show({
         type: 'error',
-        text1: 'Login error',
+        //@ts-ignore
+        text1: `Error Code: ${err.code}`,
         text2: err.message,
       });
     },

@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider } from '@/entities/session';
 import QueryProvider from './QueryProvider';
+import { CurrencyProvider } from '@/entities';
 import { navigationRef } from '@/shared/lib/NavigationService';
 
 interface ProvidersProps {
@@ -14,7 +15,9 @@ export const Providers = ({ children }: ProvidersProps) => {
     <NavigationContainer ref={navigationRef}>
       <SafeAreaProvider>
         <QueryProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <CurrencyProvider>{children}</CurrencyProvider>
+          </AuthProvider>
         </QueryProvider>
       </SafeAreaProvider>
     </NavigationContainer>

@@ -20,3 +20,9 @@ export type LoginData = {
   setRate: boolean;
   sessionId: string;
 };
+
+export type ExchangeRate = {
+  currency: string;
+  rate: string | null;
+  rateDate: string;
+};

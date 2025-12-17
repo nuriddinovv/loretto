@@ -11,7 +11,7 @@ import {
   Keyboard,
   Image,
 } from 'react-native';
-import { images } from '../../../../shared/assets';
+import { images } from '../../../shared/assets';
 import { Button } from '@/shared/ui';
 import { colors } from '@/shared/theme';
 
@@ -24,7 +24,7 @@ type Props = {
   isLoading?: boolean;
 };
 
-export default function LoginForm({ onSubmit, isLoading }: Props) {
+export function LoginForm({ onSubmit, isLoading }: Props) {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: '700',
+    fontWeight: 700,
     marginBottom: 24,
   },
   logo: {

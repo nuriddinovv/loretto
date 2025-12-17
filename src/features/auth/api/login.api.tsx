@@ -9,5 +9,6 @@ export type LoginPayload = {
 
 export async function loginApi(payload: LoginPayload) {
   const { data } = await http.post<LoginResponse>('/Login', payload);
+
   return data;
 }

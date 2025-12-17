@@ -1,11 +1,19 @@
-import { LoginForm } from '@/features/auth/login';
-import { useLoginMutation } from '@/features/auth/login/model/useLoginMutation';
+import { LoginForm } from '@/features/auth';
+import { useLoginMutation } from '@/features/auth/model/useLoginMutation';
 import { SafeArea } from '@/shared/ui';
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useLayoutEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 export function LoginScreen() {
   const login = useLoginMutation();
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, [navigation]);
   return (
     <SafeArea edges={['top', 'bottom']}>
       <View style={styles.flex}>
