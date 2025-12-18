@@ -26,3 +26,31 @@ export type ExchangeRate = {
   rate: string | null;
   rateDate: string;
 };
+
+export type Client = {
+  cardCode: string;
+  cardName: string;
+
+  groupCode: number;
+  groupName: string;
+
+  phone1: string | null;
+  phone2: string | null;
+
+  balance: number;
+  currency: string;
+
+  balanceFC: number;
+  currencyFC: string;
+
+  slpCode: number;
+  slpName: string;
+};
+
+export type ChartOfAccount = {
+  acctCode: string;
+  acctName: string;
+  balance: number;
+  currency: string;
+  balanceUSD: number;
+};

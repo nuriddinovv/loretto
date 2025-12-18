@@ -37,13 +37,18 @@ export function ExchangeRatesScreen() {
       title: 'Valyuta kursi',
       headerShadowVisible: false,
       headerLeft: () => (
-        <TouchableOpacity onPress={goBack} style={{ paddingHorizontal: 10 }}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={goBack}
+          style={{ paddingHorizontal: 10 }}
+        >
           <ArrowLeft color={colors.textPrimary} size={24} />
         </TouchableOpacity>
       ),
       headerRight: () =>
         canSetRate ? (
           <TouchableOpacity
+            activeOpacity={0.8}
             onPress={() => {
               setSelected(null);
               setModalVisible(true);
@@ -87,6 +92,7 @@ export function ExchangeRatesScreen() {
             `${item.currency}-${item.rateDate}-${idx}`
           }
           contentContainerStyle={s.listContent}
+          showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => openEditModal(item)}>
               <View style={s.card}>

@@ -24,7 +24,7 @@ export const modules: HomeModule[] = [
     permissionKey: 'setRate',
   },
   {
-    route: 'exchange',
+    route: 'currency-exchange',
     text: 'VALYUTA ALMASHTIRISH',
     image: icons.exchange,
     permissionKey: 'currencyExchange',
@@ -42,13 +42,13 @@ export const modules: HomeModule[] = [
     permissionKey: 'clients',
   },
   {
-    route: 'account',
+    route: 'chart-of-accounts',
     text: 'PLAN SCHETOV',
     image: icons.chartOfAccounts,
     permissionKey: 'chartsOfAccounts',
   },
   {
-    route: 'kassaOtchet',
+    route: 'cash-report',
     text: 'KASSA OTCHET',
     image: icons.cashierReport,
     permissionKey: 'cashReport',

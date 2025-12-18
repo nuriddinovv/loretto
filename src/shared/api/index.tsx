@@ -1,2 +1,8 @@
 export { http, setAuthHeaders } from './http';
-export type { LoginResponse, LoginData, ExchangeRate } from './types';
+export type {
+  LoginResponse,
+  LoginData,
+  ExchangeRate,
+  Client,
+  ChartOfAccount,
+} from './types';
