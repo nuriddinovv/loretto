@@ -5,3 +5,4 @@ export { useCurrentExchangeRateQuery } from './currentExchangeRate/index';
 export { CurrencyProvider, useCurrency } from './currency/index';
 export { useClientsQuery } from './clients/index';
 export { useChartOfAccountsQuery } from './chartOfAccounts/index';
+export { useCashReportQuery } from './cashReport/index';

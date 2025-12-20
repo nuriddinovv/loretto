@@ -54,3 +54,46 @@ export type ChartOfAccount = {
   currency: string;
   balanceUSD: number;
 };
+
+export type InvoiceData = {
+  accountCode: string | null;
+  bplid: number;
+  credit: number;
+  contraAccount: string | null;
+  debit: number;
+  fccredit: number;
+  fccurrency: string;
+  fcdebit: number;
+  shortName: string;
+  name: string;
+};
+
+export type CashReportResponse = {
+  status: string;
+  data: CashReport;
+  error: null | ApiError;
+};
+
+export type CashReport = {
+  acctCode: string | null;
+  acctName: string | null;
+  openingBalanceUZS: number;
+  openingBalanceUSD: number;
+  closingBalanceUZS: number;
+  closingBalanceUSD: number;
+  averageRate: number;
+  lines: CashReportLine[];
+};
+
+export type CashReportLine = {
+  number: number;
+  type: string;
+  acctCode: string;
+  acctName: string;
+  refDate: string;
+  amountUZS: number;
+  amountUSD: number;
+  memo: string | null;
+  cardName: string;
+  rate: number;
+};

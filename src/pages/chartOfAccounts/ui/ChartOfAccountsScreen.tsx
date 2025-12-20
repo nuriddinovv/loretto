@@ -12,6 +12,7 @@ import { debouncedValue, goBack, SafeArea, colors } from '@/shared';
 import { useNavigation } from '@react-navigation/native';
 import { ArrowLeft } from 'lucide-react-native';
 import { useChartOfAccountsQuery } from '@/entities';
+import { ProtectedScreen } from '@/shared/ui';
 
 export function ChartOfAccountsScreen() {
   const nav = useNavigation();
@@ -42,51 +43,53 @@ export function ChartOfAccountsScreen() {
   );
 
   return (
-    <SafeArea edges={['bottom']} style={s.container}>
-      <TextInput
-        value={q}
-        onChangeText={setQ}
-        placeholder="Qidirish..."
-        style={s.search}
-        autoCorrect={false}
-        autoCapitalize="none"
-        clearButtonMode="while-editing"
-      />
+    <ProtectedScreen requiredPermission="chartsOfAccounts">
+      <SafeArea edges={['bottom']} style={s.container}>
+        <TextInput
+          value={q}
+          onChangeText={setQ}
+          placeholder="Qidirish..."
+          style={s.search}
+          autoCorrect={false}
+          autoCapitalize="none"
+          clearButtonMode="while-editing"
+        />
 
-      {chartOfAccounts.isFetching && (
-        <View style={s.loading}>
-          <ActivityIndicator size={'large'} color={colors.primary} />
-        </View>
-      )}
-
-      <FlatList
-        data={data}
-        keyExtractor={item => item.acctCode}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={[s.list, data.length === 0 && s.listEmpty]}
-        renderItem={({ item }) => (
-          <View style={s.card}>
-            <Text style={s.name}>
-              {item.acctCode} - {item.acctName}
-            </Text>
-
-            <Text style={s.balance}>
-              Balans: {item.balanceUSD.toLocaleString()} USD
-            </Text>
-            <Text style={s.balance}>
-              Balans: {item.balance.toLocaleString()} UZS
-            </Text>
+        {chartOfAccounts.isFetching && (
+          <View style={s.loading}>
+            <ActivityIndicator size={'large'} color={colors.primary} />
           </View>
         )}
-        ListEmptyComponent={
-          !chartOfAccounts.isFetching ? (
-            <View style={s.empty}>
-              <Text style={s.hint}>Topilmadi</Text>
+
+        <FlatList
+          data={data}
+          keyExtractor={item => item.acctCode}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={[s.list, data.length === 0 && s.listEmpty]}
+          renderItem={({ item }) => (
+            <View style={s.card}>
+              <Text style={s.name}>
+                {item.acctCode} - {item.acctName}
+              </Text>
+
+              <Text style={s.balance}>
+                Balans: {item.balanceUSD.toLocaleString()} USD
+              </Text>
+              <Text style={s.balance}>
+                Balans: {item.balance.toLocaleString()} UZS
+              </Text>
             </View>
-          ) : null
-        }
-      />
-    </SafeArea>
+          )}
+          ListEmptyComponent={
+            !chartOfAccounts.isFetching ? (
+              <View style={s.empty}>
+                <Text style={s.hint}>Topilmadi</Text>
+              </View>
+            ) : null
+          }
+        />
+      </SafeArea>
+    </ProtectedScreen>
   );
 }
 const s = StyleSheet.create({

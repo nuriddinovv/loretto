@@ -14,6 +14,7 @@ import { debouncedValue, goBack, SafeArea } from '@/shared';
 import { useClientsQuery } from '@/entities';
 import { useNavigation } from '@react-navigation/native';
 import { ArrowLeft } from 'lucide-react-native';
+import { ProtectedScreen } from '@/shared/ui';
 
 export function ClientsScreen() {
   const nav = useNavigation();
@@ -41,49 +42,51 @@ export function ClientsScreen() {
   const data = useMemo(() => clients.data ?? [], [clients.data]);
 
   return (
-    <SafeArea edges={['bottom']} style={s.container}>
-      <TextInput
-        value={q}
-        onChangeText={setQ}
-        placeholder="Mijoz qidirish..."
-        style={s.search}
-        autoCorrect={false}
-        autoCapitalize="none"
-        clearButtonMode="while-editing"
-      />
+    <ProtectedScreen requiredPermission="clients">
+      <SafeArea edges={['bottom']} style={s.container}>
+        <TextInput
+          value={q}
+          onChangeText={setQ}
+          placeholder="Mijoz qidirish..."
+          style={s.search}
+          autoCorrect={false}
+          autoCapitalize="none"
+          clearButtonMode="while-editing"
+        />
 
-      {clients.isFetching && (
-        <View style={s.loading}>
-          <ActivityIndicator size={'large'} color={colors.primary} />
-        </View>
-      )}
-
-      <FlatList
-        data={data}
-        keyExtractor={item => item.cardCode}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={[s.list, data.length === 0 && s.listEmpty]}
-        renderItem={({ item }) => (
-          <View style={s.card}>
-            <Text style={s.name}>{item.cardName}</Text>
-
-            {!!item.phone1 && <Text style={s.sub}>{item.phone1}</Text>}
-            {!!item.phone2 && <Text style={s.sub}>{item.phone2}</Text>}
-
-            <Text style={s.balance}>
-              Balans: {item.balance} {item.currency}
-            </Text>
+        {clients.isFetching && (
+          <View style={s.loading}>
+            <ActivityIndicator size={'large'} color={colors.primary} />
           </View>
         )}
-        ListEmptyComponent={
-          !clients.isFetching ? (
-            <View style={s.empty}>
-              <Text style={s.hint}>Topilmadi</Text>
+
+        <FlatList
+          data={data}
+          keyExtractor={item => item.cardCode}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={[s.list, data.length === 0 && s.listEmpty]}
+          renderItem={({ item }) => (
+            <View style={s.card}>
+              <Text style={s.name}>{item.cardName}</Text>
+
+              {!!item.phone1 && <Text style={s.sub}>{item.phone1}</Text>}
+              {!!item.phone2 && <Text style={s.sub}>{item.phone2}</Text>}
+
+              <Text style={s.balance}>
+                Balans: {item.balance} {item.currency}
+              </Text>
             </View>
-          ) : null
-        }
-      />
-    </SafeArea>
+          )}
+          ListEmptyComponent={
+            !clients.isFetching ? (
+              <View style={s.empty}>
+                <Text style={s.hint}>Topilmadi</Text>
+              </View>
+            ) : null
+          }
+        />
+      </SafeArea>
+    </ProtectedScreen>
   );
 }
 const s = StyleSheet.create({

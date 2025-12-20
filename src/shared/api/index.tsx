@@ -5,4 +5,8 @@ export type {
   ExchangeRate,
   Client,
   ChartOfAccount,
+  InvoiceData,
+  CashReport,
+  CashReportResponse,
+  CashReportLine,
 } from './types';
