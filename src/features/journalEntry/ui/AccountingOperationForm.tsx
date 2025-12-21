@@ -230,6 +230,7 @@ export function AccountingOperationForm() {
       setInputValues(prev => {
         const newValues = { ...prev };
         if (newValues[index]) {
+          //@ts-ignore
           delete newValues[index].usd;
         }
         return newValues;
