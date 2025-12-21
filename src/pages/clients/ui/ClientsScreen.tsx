@@ -49,6 +49,7 @@ export function ClientsScreen() {
           onChangeText={setQ}
           placeholder="Mijoz qidirish..."
           style={s.search}
+          placeholderTextColor={'#000'}
           autoCorrect={false}
           autoCapitalize="none"
           clearButtonMode="while-editing"

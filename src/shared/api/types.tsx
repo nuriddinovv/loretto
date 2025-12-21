@@ -57,7 +57,7 @@ export type ChartOfAccount = {
 
 export type InvoiceData = {
   accountCode: string | null;
-  bplid: number;
+  bplid: number | null;
   credit: number;
   contraAccount: string | null;
   debit: number;
@@ -96,4 +96,36 @@ export type CashReportLine = {
   memo: string | null;
   cardName: string;
   rate: number;
+};
+
+export type JournalEntriesResponse = {
+  status: string;
+  data: JournalEntries[];
+  error: null | ApiError;
+};
+
+export type JournalEntries = {
+  memo: string;
+  referenceDate: string;
+  jdtNum: number;
+  journalEntryLines: JournalEntriesLine[];
+};
+
+export type JournalEntriesLine = {
+  accountCode: string;
+  accountName: string;
+  bplid: null | number | string;
+  contraAccount: string;
+  credit: number;
+  debit: number;
+  fccredit: number;
+  fccurrency: string;
+  fcdebit: number;
+  shortName: string;
+};
+
+export type DelJournalEntriesResponse = {
+  status: string;
+  data: true | null;
+  error: null | ApiError;
 };

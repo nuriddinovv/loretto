@@ -9,4 +9,8 @@ export type {
   CashReport,
   CashReportResponse,
   CashReportLine,
+  JournalEntriesResponse,
+  JournalEntries,
+  JournalEntriesLine,
+  DelJournalEntriesResponse,
 } from './types';

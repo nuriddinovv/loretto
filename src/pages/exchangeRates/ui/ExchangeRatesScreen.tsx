@@ -65,11 +65,12 @@ export function ExchangeRatesScreen() {
     closeModal();
 
     await queryClient.invalidateQueries({
-      queryKey: ['exchangeRates'], // ⚠️ sizning real queryKey shu bo‘lishi kerak
+      queryKey: ['exchangeRates'],
     });
   };
 
   const openEditModal = (item: RateItem) => {
+    if (!canSetRate) return;
     setSelected(item);
     setModalVisible(true);
   };
@@ -94,7 +95,10 @@ export function ExchangeRatesScreen() {
           contentContainerStyle={s.listContent}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => openEditModal(item)}>
+            <TouchableOpacity
+              disabled={!canSetRate}
+              onPress={() => openEditModal(item)}
+            >
               <View style={s.card}>
                 <Text style={s.date}>{formatDate(item.rateDate)}</Text>
                 <Text style={s.rate}>

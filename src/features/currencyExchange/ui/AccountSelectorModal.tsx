@@ -63,6 +63,7 @@ export function AccountSelectorModal({
           <TextInput
             style={s.searchInput}
             placeholder="Qidirish..."
+            placeholderTextColor={'#000'}
             value={searchQuery}
             onChangeText={setSearchQuery}
             autoCorrect={false}

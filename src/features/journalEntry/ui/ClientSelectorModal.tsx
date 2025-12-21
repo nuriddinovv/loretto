@@ -62,6 +62,7 @@ export function ClientSelectorModal({
           <TextInput
             style={s.searchInput}
             placeholder="Qidirish..."
+            placeholderTextColor={'#000'}
             value={searchQuery}
             onChangeText={setSearchQuery}
             autoCorrect={false}
@@ -149,4 +150,3 @@ const s = StyleSheet.create({
     color: colors.textPrimary,
   },
 });
-

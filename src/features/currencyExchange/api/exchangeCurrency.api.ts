@@ -6,7 +6,7 @@ export type ExchangeCurrencyPayload = {
   fromAmount: number;
   toAccount: string;
   toAmount: number;
-  transitAccount: string;
+  transitAccount: string | null;
 };
 
 export type ExchangeCurrencyResponse = {

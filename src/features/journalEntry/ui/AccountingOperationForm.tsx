@@ -46,6 +46,11 @@ export function AccountingOperationForm() {
   // Comment
   const [comment, setComment] = useState('');
 
+  // Input values for controlled inputs
+  const [inputValues, setInputValues] = useState<
+    Record<number, { usd: string; uzs: string }>
+  >({});
+
   // Modals
   const [modalMainVisible, setModalMainVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -57,6 +62,7 @@ export function AccountingOperationForm() {
       setComment('');
       setInvoice([]);
       setMainInvoice(undefined);
+      setInputValues({});
       setCommentModalVisible(false);
     },
     onError: () => {
@@ -94,6 +100,7 @@ export function AccountingOperationForm() {
   useEffect(() => {
     setMainInvoice(undefined);
     setInvoice([]);
+    setInputValues({});
   }, [selectedType]);
 
   const handleAddMainInvoice = useCallback((item: ChartOfAccount) => {
@@ -181,6 +188,86 @@ export function AccountingOperationForm() {
     [selectedType],
   );
 
+  const handleInputChange = (
+    index: number,
+    type: 'usd' | 'uzs',
+    value: string,
+  ) => {
+    // Input qiymatini saqlash
+    setInputValues(prev => ({
+      ...prev,
+      [index]: {
+        ...prev[index],
+        [type]: value,
+      },
+    }));
+
+    // Bo'sh string bo'lsa
+    if (value === '' || value === '.') {
+      if (type === 'uzs') {
+        updateInvoiceItem(index, {
+          [selectedType === 'PRIXOD' ? 'fccredit' : 'fcdebit']: 0,
+          [selectedType === 'PRIXOD' ? 'credit' : 'debit']: 0,
+        });
+      } else {
+        updateInvoiceItem(index, {
+          [selectedType === 'PRIXOD' ? 'credit' : 'debit']: 0,
+        });
+      }
+      return;
+    }
+
+    // Raqamni parse qilish
+    const numValue =
+      parseFloat(value.replace(/,/g, '').replace(/\s/g, '')) || 0;
+
+    if (type === 'uzs') {
+      // UZS o'zgartirilsa - USD ni avtomatik hisoblash
+      const currentRate = rate && rate > 0 ? rate : 1;
+      const calculatedUSD = numValue / currentRate;
+
+      // USD inputValues ni tozalash
+      setInputValues(prev => {
+        const newValues = { ...prev };
+        if (newValues[index]) {
+          delete newValues[index].usd;
+        }
+        return newValues;
+      });
+
+      updateInvoiceItem(index, {
+        [selectedType === 'PRIXOD' ? 'fccredit' : 'fcdebit']: numValue,
+        [selectedType === 'PRIXOD' ? 'credit' : 'debit']: Number(
+          calculatedUSD.toFixed(2),
+        ),
+      });
+    } else {
+      // USD o'zgartirilsa - faqat USD ni yangilash
+      updateInvoiceItem(index, {
+        [selectedType === 'PRIXOD' ? 'credit' : 'debit']: numValue,
+      });
+    }
+  };
+
+  const getInputValue = (index: number, type: 'usd' | 'uzs'): string => {
+    // Agar inputValues da mavjud bo'lsa, uni qaytarish (user yozayotgan qiymat)
+    if (inputValues[index]?.[type] !== undefined) {
+      return inputValues[index][type];
+    }
+
+    // Aks holda, invoice dan qiymatni qaytarish
+    const item = invoice[index];
+    if (!item) return '';
+
+    if (type === 'usd') {
+      const value = selectedType === 'PRIXOD' ? item.credit : item.debit;
+      return value && value !== 0 ? String(value) : '';
+    } else {
+      const value = selectedType === 'PRIXOD' ? item.fccredit : item.fcdebit;
+      return value && value !== 0 ? String(value) : '';
+    }
+  };
+
   const handleSubmit = async () => {
     if (mutation.isPending || !mainInvoice) return;
 
@@ -228,51 +315,6 @@ export function AccountingOperationForm() {
         useGrouping: true,
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
-      });
-    }
-  };
-
-  const handleAmountChange = (
-    index: number,
-    field: 'credit' | 'debit' | 'fccredit' | 'fcdebit',
-    value: string,
-  ) => {
-    // Bo'sh string bo'lsa, 0 o'rniga bo'sh qoldirish
-    if (value === '') {
-      updateInvoiceItem(index, {
-        [field]: 0,
-        ...(field === 'fccredit' || field === 'fcdebit'
-          ? selectedType === 'PRIXOD'
-            ? { credit: 0 }
-            : { debit: 0 }
-          : {}),
-      });
-      return;
-    }
-
-    const numbers = value.replace(/\D/g, '');
-    const numValue = Number(numbers) || 0;
-
-    if (field === 'fccredit' || field === 'fcdebit') {
-      // Update UZS and calculate USD
-      // Rate bo'sh bo'lsa yoki 0 bo'lsa, 1 ishlatish
-      const currentRate = rate && rate > 0 ? rate : 1;
-      const calculatedUSD = numValue / currentRate;
-
-      updateInvoiceItem(index, {
-        [field]: numValue,
-        ...(selectedType === 'PRIXOD'
-          ? {
-              credit: Number(calculatedUSD.toFixed(2)),
-            }
-          : {
-              debit: Number(calculatedUSD.toFixed(2)),
-            }),
-      });
-    } else {
-      // Update USD directly
-      updateInvoiceItem(index, {
-        [field]: numValue,
       });
     }
   };
@@ -349,50 +391,12 @@ export function AccountingOperationForm() {
                 <View style={s.accountOptionInputWrap}>
                   <TextInput
                     style={s.accountOptionInput}
-                    keyboardType="numeric"
+                    keyboardType="decimal-pad"
                     placeholder="USD"
-                    value={
-                      selectedType === 'PRIXOD'
-                        ? formatNumber(item.credit, true)
-                        : formatNumber(item.debit, true)
+                    value={getInputValue(index, 'usd')}
+                    onChangeText={value =>
+                      handleInputChange(index, 'usd', value)
                     }
-                    onChangeText={value => {
-                      // Bo'sh string bo'lsa, 0 o'rniga bo'sh qoldirish
-                      if (value === '' || value === '.') {
-                        updateInvoiceItem(
-                          index,
-                          selectedType === 'PRIXOD'
-                            ? { credit: 0 }
-                            : { debit: 0 },
-                        );
-                        return;
-                      }
-
-                      // Formatlangan qiymatdan faqat raqam va nuqta ni olish
-                      // "1 234,56" -> "1234.56"
-                      const cleaned = value
-                        .replace(/\s/g, '') // Bo'sh joylarni olib tashlash
-                        .replace(/,/g, '.') // Vergulni nuqtaga o'zgartirish
-                        .replace(/[^\d.]/g, ''); // Faqat raqam va nuqta qoldirish
-
-                      // Faqat bir nuqta ruxsat etiladi
-                      const parts = cleaned.split('.');
-                      const formatted =
-                        parts.length > 1
-                          ? parts[0] + '.' + parts.slice(1).join('').slice(0, 2)
-                          : parts[0];
-
-                      // Agar formatted bo'sh bo'lsa, 0 qilish
-                      const numValue = formatted ? Number(formatted) : 0;
-
-                      // Update USD only
-                      updateInvoiceItem(
-                        index,
-                        selectedType === 'PRIXOD'
-                          ? { credit: numValue }
-                          : { debit: numValue },
-                      );
-                    }}
                     placeholderTextColor={colors.textMuted}
                   />
                   <Text style={s.currencyText}>$</Text>
@@ -400,20 +404,12 @@ export function AccountingOperationForm() {
                 <View style={s.accountOptionInputWrap}>
                   <TextInput
                     style={s.accountOptionInput}
-                    keyboardType="numeric"
+                    keyboardType="decimal-pad"
                     placeholder="UZS"
-                    value={
-                      selectedType === 'PRIXOD'
-                        ? formatNumber(item.fccredit, false)
-                        : formatNumber(item.fcdebit, false)
+                    value={getInputValue(index, 'uzs')}
+                    onChangeText={value =>
+                      handleInputChange(index, 'uzs', value)
                     }
-                    onChangeText={value => {
-                      handleAmountChange(
-                        index,
-                        selectedType === 'PRIXOD' ? 'fccredit' : 'fcdebit',
-                        value,
-                      );
-                    }}
                     placeholderTextColor={colors.textMuted}
                   />
                   <Text style={s.currencyText}>SUM</Text>

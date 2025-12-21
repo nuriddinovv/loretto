@@ -10,6 +10,7 @@ import {
   HomeScreen,
   LoginScreen,
 } from '@/pages';
+import { JournalEntriesScreen } from '@/pages/journalEntries/ui/JournalEntriesScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,7 @@ export function AppRouter() {
         component={AccountingOperationScreen}
       />
       <Stack.Screen name="cash-report" component={CashReportScreen} />
+      <Stack.Screen name="journal-entries" component={JournalEntriesScreen} />
       <Stack.Screen name="clients" component={ClientsScreen} />
       <Stack.Screen
         name="chart-of-accounts"

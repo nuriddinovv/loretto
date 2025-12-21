@@ -20,9 +20,6 @@ export function ExchangeForm() {
   // Accounts
   const [fromAccount, setFromAccount] = useState<ChartOfAccount | null>(null);
   const [toAccount, setToAccount] = useState<ChartOfAccount | null>(null);
-  const [transitAccount, setTransitAccount] = useState<ChartOfAccount | null>(
-    null,
-  );
 
   // Amounts (stored as raw numbers without formatting)
   const [fromAmount, setFromAmount] = useState<string>('');
@@ -58,7 +55,6 @@ export function ExchangeForm() {
   // Modals
   const [modalFromVisible, setModalFromVisible] = useState(false);
   const [modalToVisible, setModalToVisible] = useState(false);
-  const [modalTransitVisible, setModalTransitVisible] = useState(false);
 
   const mutation = useExchangeCurrencyMutation();
 
@@ -67,13 +63,11 @@ export function ExchangeForm() {
     !fromAmount ||
     !toAccount ||
     !toAmount ||
-    !transitAccount ||
     mutation.isPending;
 
   const clearData = () => {
     setFromAccount(null);
     setToAccount(null);
-    setTransitAccount(null);
     setFromAmount('');
     setToAmount('');
   };
@@ -83,7 +77,7 @@ export function ExchangeForm() {
   }, [exchangeType]);
 
   const handleSubmit = async () => {
-    if (!fromAccount || !toAccount || !transitAccount) return;
+    if (!fromAccount || !toAccount) return;
 
     try {
       const result = await mutation.mutateAsync({
@@ -92,7 +86,7 @@ export function ExchangeForm() {
         fromAmount: Number(fromAmount),
         toAccount: toAccount.acctCode,
         toAmount: Number(toAmount),
-        transitAccount: transitAccount.acctCode,
+        transitAccount: null,
       });
 
       // Only clear data if the operation was actually successful
@@ -232,24 +226,6 @@ export function ExchangeForm() {
             </View>
           </View>
         </View>
-
-        {/* Transit Account Section */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Konvertatsiya scheti:</Text>
-          <View style={s.inputContainer}>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={s.inputBtn}
-              onPress={() => setModalTransitVisible(true)}
-            >
-              <Text style={[s.inputBtnText, { textAlign: 'center' }]}>
-                {transitAccount
-                  ? `${transitAccount.acctCode} - ${transitAccount.acctName}`
-                  : 'Schet tanlang'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
       </View>
 
       {/* Submit Button */}
@@ -278,16 +254,6 @@ export function ExchangeForm() {
         onSelect={account => {
           setToAccount(account);
           setModalToVisible(false);
-        }}
-        title="Schetlar"
-      />
-
-      <AccountSelectorModal
-        visible={modalTransitVisible}
-        onClose={() => setModalTransitVisible(false)}
-        onSelect={account => {
-          setTransitAccount(account);
-          setModalTransitVisible(false);
         }}
         title="Schetlar"
       />

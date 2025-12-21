@@ -141,6 +141,7 @@ export function SetRateModal({
               <TextInput
                 style={s.input}
                 placeholder="Kurs..."
+                placeholderTextColor={'#000'}
                 keyboardType="numeric"
                 value={rateText}
                 onChangeText={setRateText}

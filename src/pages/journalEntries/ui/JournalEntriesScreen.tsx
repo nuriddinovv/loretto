@@ -3,15 +3,14 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ArrowLeft } from 'lucide-react-native';
 import { SafeArea, colors, goBack } from '@/shared';
-import { ExchangeForm } from '@/features';
-import { ProtectedScreen } from '@/shared/ui';
+import { JournalEntriesForm } from '@/features/journalEntries/ui/JournalEntriesForm';
 
-export function ExchangeScreen() {
+export function JournalEntriesScreen() {
   const nav = useNavigation();
 
   useLayoutEffect(() => {
     nav.setOptions({
-      title: 'Valyuta almashtirish',
+      title: "Ro'yhat",
       headerShadowVisible: false,
       headerLeft: () => (
         <TouchableOpacity
@@ -26,11 +25,9 @@ export function ExchangeScreen() {
   });
 
   return (
-    <ProtectedScreen requiredPermission="currencyExchange">
-      <SafeArea edges={['bottom']} style={s.container}>
-        <ExchangeForm />
-      </SafeArea>
-    </ProtectedScreen>
+    <SafeArea edges={['bottom']} style={s.container}>
+      <JournalEntriesForm />
+    </SafeArea>
   );
 }
 
@@ -43,4 +40,3 @@ const s = StyleSheet.create({
     paddingHorizontal: 10,
   },
 });
-

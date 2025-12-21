@@ -7,3 +7,4 @@ export const cashReportKeys = {
     dateTo: string;
   }) => [...cashReportKeys.all, 'query', params] as const,
 };
+

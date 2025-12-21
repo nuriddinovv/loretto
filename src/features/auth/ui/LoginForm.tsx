@@ -70,6 +70,7 @@ export function LoginForm({ onSubmit, isLoading }: Props) {
                 onChangeText={setLogin}
                 placeholder="Login"
                 autoCapitalize="none"
+                placeholderTextColor={'black'}
                 autoCorrect={false}
                 keyboardType="default"
                 returnKeyType="next"
@@ -78,12 +79,13 @@ export function LoginForm({ onSubmit, isLoading }: Props) {
             </View>
 
             <View style={styles.field}>
-              <Text style={styles.label}>Password</Text>
+              <Text style={styles.label}>Parol</Text>
               <TextInput
                 value={password}
                 onChangeText={setPassword}
-                placeholder="Password"
+                placeholder="Parol"
                 secureTextEntry
+                placeholderTextColor={'black'}
                 autoCapitalize="none"
                 autoCorrect={false}
                 returnKeyType="done"
@@ -94,7 +96,7 @@ export function LoginForm({ onSubmit, isLoading }: Props) {
           </View>
 
           <Button
-            title="Login"
+            title="Kirish"
             isFullWidth
             onPress={handleSubmit}
             isDisabled={!canSubmit}
@@ -147,6 +149,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderColor: colors.border,
     paddingHorizontal: 12,
+    color: 'black',
   },
   error: { marginTop: 6, marginBottom: 10 },
   button: {

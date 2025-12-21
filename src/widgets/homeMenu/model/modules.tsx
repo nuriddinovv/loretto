@@ -21,7 +21,6 @@ export const modules: HomeModule[] = [
     route: 'exchange-rate',
     text: 'VALYUTA KURSI',
     image: icons.exchangeRate,
-    permissionKey: 'setRate',
   },
   {
     route: 'currency-exchange',

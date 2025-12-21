@@ -24,4 +24,8 @@ export type {
   CashReportResponse,
   CashReport,
   CashReportLine,
+  JournalEntries,
+  JournalEntriesLine,
+  JournalEntriesResponse,
+  DelJournalEntriesResponse,
 } from './api/index';
