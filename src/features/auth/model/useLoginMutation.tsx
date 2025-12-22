@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { loginApi, type LoginPayload } from '../api/login.api';
 import { useAuth } from '@/entities/session';
-import { replace } from '@/shared/lib/NavigationService';
+import { navigate } from '@/shared/lib/NavigationService';
 import Toast from 'react-native-toast-message';
 
 export function useLoginMutation() {
@@ -26,7 +26,7 @@ export function useLoginMutation() {
         },
       });
 
-      replace('home');
+      navigate('home');
     },
     onError: err => {
       Toast.show({
